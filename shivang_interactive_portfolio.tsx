@@ -161,7 +161,7 @@ function ArrowLeftIcon(props: IconProps) {
 function CursorTrail({ x, y }: MousePoint) {
   return (
     <motion.div
-      className="pointer-events-none fixed z-[60] h-8 w-8 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-300 blur-xl"
+      className="pointer-events-none fixed z-[60] hidden h-8 w-8 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-300 blur-xl md:block"
       animate={{ x: x - 16, y: y - 16 }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
     />
@@ -228,7 +228,7 @@ function PlanetLayer({ entered }: { entered: boolean }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <motion.div
-        className="absolute left-[6%] top-[16%] h-28 w-28 rounded-full border border-white/10"
+        className="absolute left-[6%] top-[16%] h-24 w-24 rounded-full border border-white/10 sm:h-28 sm:w-28"
         style={{
           background:
             "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.45), rgba(129,140,248,0.28) 30%, rgba(59,130,246,0.16) 55%, rgba(0,0,0,0) 75%)",
@@ -239,7 +239,7 @@ function PlanetLayer({ entered }: { entered: boolean }) {
       />
 
       <motion.div
-        className="absolute right-[10%] top-[12%] h-44 w-44 rounded-full"
+        className="absolute right-[6%] top-[12%] h-36 w-36 rounded-full sm:right-[10%] sm:h-44 sm:w-44"
         style={{
           background:
             "radial-gradient(circle at 35% 35%, rgba(255,244,214,0.95), rgba(250,204,21,0.26) 28%, rgba(244,114,182,0.14) 55%, rgba(0,0,0,0) 76%)",
@@ -257,7 +257,7 @@ function PlanetLayer({ entered }: { entered: boolean }) {
       </motion.div>
 
       <motion.div
-        className="absolute bottom-[10%] left-[28%] h-20 w-20 rounded-full"
+        className="absolute bottom-[12%] left-[24%] h-16 w-16 rounded-full sm:bottom-[10%] sm:left-[28%] sm:h-20 sm:w-20"
         style={{
           background:
             "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), rgba(167,139,250,0.22) 35%, rgba(34,211,238,0.12) 62%, rgba(0,0,0,0) 78%)",
@@ -277,7 +277,7 @@ function RocketEntry({ entered, onEnter }: { entered: boolean; onEnter: () => vo
     <motion.button
       type="button"
       onClick={onEnter}
-      className="absolute right-[20%] top-[60%] z-30 cursor-pointer"
+      className="absolute bottom-[13svh] right-[8%] z-30 cursor-pointer sm:bottom-[14svh] sm:right-[12%] md:right-[20%] md:top-[60%] md:bottom-auto"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: [0, -8, 0], x: [0, -6, 0], rotate: [-2, 2, -2] }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -286,8 +286,10 @@ function RocketEntry({ entered, onEnter }: { entered: boolean; onEnter: () => vo
       aria-label="Enter system"
     >
       <div className="relative flex items-center justify-center cursor-pointer">
-        <span className="select-none text-[11rem] drop-shadow-[0_0_40px_rgba(255,255,255,0.45)] md:text-[12rem]">🚀</span>
-        <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-[50%] -translate-y-[10%] rotate-[18deg] text-center text-[10px] font-bold uppercase tracking-[0.16em] md:text-[12px]">
+        <span className="select-none text-[4.75rem] drop-shadow-[0_0_28px_rgba(255,255,255,0.45)] sm:text-[6rem] md:text-[11rem] lg:text-[12rem]">
+          🚀
+        </span>
+        <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-[50%] -translate-y-[10%] rotate-[18deg] text-center text-[8px] font-bold uppercase tracking-[0.16em] sm:text-[9px] md:text-[12px]">
           <span className="bg-gradient-to-b from-zinc-900 via-zinc-700 to-zinc-900 bg-clip-text text-transparent opacity-90">
             Enter
           </span>
@@ -596,6 +598,7 @@ export default function Portfolio() {
   const [skillFilter, setSkillFilter] = useState<string>("all");
 
   const entered = view !== "home";
+  const isMobile = viewport.width < 768;
 
   useEffect(() => {
     const move = (e: MouseEvent) => setMouse({ x: e.clientX, y: e.clientY });
@@ -658,7 +661,10 @@ export default function Portfolio() {
   };
 
   useEffect(() => {
-    if (!headingRef.current) return;
+    if (!headingRef.current || isMobile) {
+      setProximity(0);
+      return;
+    }
 
     const rect = headingRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -668,7 +674,7 @@ export default function Portfolio() {
     const dist = Math.sqrt(dx * dx + dy * dy);
     const maxDist = 400;
     setProximity(Math.max(0, 1 - dist / maxDist));
-  }, [mouse]);
+  }, [mouse, isMobile]);
 
   const skillGroups = [
     {
@@ -747,16 +753,43 @@ export default function Portfolio() {
     },
   ] as const;
 
+  const navItems = [
+    {
+      label: "Skills",
+      onClick: () => navigateToMainSection(skillsRef),
+      active: view === "main",
+    },
+    {
+      label: "Experiences & Volunteering",
+      onClick: () => navigateToMainSection(experienceRef),
+      active: view === "main",
+    },
+    {
+      label: "Projects",
+      onClick: () => setView("projects"),
+      active: view === "projects",
+    },
+    {
+      label: "Contact",
+      onClick: () => setView("contact"),
+      active: view === "contact",
+    },
+  ];
+
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&display=swap');`}</style>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&display=swap');
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
 
       <div
         className="min-h-screen overflow-hidden bg-transparent text-white selection:bg-fuchsia-300/30 selection:text-white"
         style={{ fontFamily: '"Inter Tight", Inter, system-ui, sans-serif' }}
       >
         <AdaptiveEnvironment mouse={mouse} entered={entered} viewport={viewport} systemTint={systemTint} />
-        <CursorTrail x={mouse.x} y={mouse.y} />
+        {!isMobile && <CursorTrail x={mouse.x} y={mouse.y} />}
 
         {!entered && (
           <div className="pointer-events-none fixed inset-0 z-20">
@@ -768,77 +801,98 @@ export default function Portfolio() {
 
         <AnimatePresence>{boot ? <BootSequence onDone={finishBoot} systemTint={systemTint} /> : null}</AnimatePresence>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 pb-16 pt-8 md:px-8 lg:px-10">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-14 pt-4 sm:px-6 sm:pb-16 sm:pt-8 md:px-8 lg:px-10">
           <motion.header
-            className="relative z-40 mb-10 flex items-center justify-between rounded-full border border-white/10 bg-black/25 px-5 py-3 backdrop-blur-xl"
+            className="relative z-40 mb-8 rounded-[2rem] border border-white/10 bg-black/25 px-4 py-4 backdrop-blur-xl sm:px-5 md:mb-10 md:rounded-full md:py-3"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="flex items-center gap-3">
-              <AnimatePresence>
-                {entered ? (
-                  <motion.button
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -8 }}
-                    onClick={exitSystem}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-zinc-200 transition hover:bg-white/[0.12]"
-                    aria-label="Exit system"
-                    title="Back"
-                  >
-                    <ArrowLeftIcon className="h-4 w-4" />
-                  </motion.button>
-                ) : null}
-              </AnimatePresence>
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <AnimatePresence>
+                  {entered ? (
+                    <motion.button
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -8 }}
+                      onClick={exitSystem}
+                      className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-zinc-200 transition hover:bg-white/[0.12]"
+                      aria-label="Exit system"
+                      title="Back"
+                    >
+                      <ArrowLeftIcon className="h-5 w-5" />
+                    </motion.button>
+                  ) : null}
+                </AnimatePresence>
 
-              <div>
-                <div className="bg-gradient-to-r from-amber-200 via-fuchsia-200 to-cyan-200 bg-clip-text text-sm font-semibold tracking-[0.28em] text-transparent">
-                  SHIVANG BHUT
+                <div className="min-w-0">
+                  <div className="truncate bg-gradient-to-r from-amber-200 via-fuchsia-200 to-cyan-200 bg-clip-text text-sm font-semibold tracking-[0.22em] text-transparent sm:tracking-[0.28em]">
+                    SHIVANG BHUT
+                  </div>
+                  <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-zinc-500 sm:tracking-[0.16em]">
+                    Welcome to my world
+                  </div>
                 </div>
-                <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-zinc-500">Welcome to my world</div>
               </div>
+
+              {entered && (
+                <div className="hidden items-center gap-6 text-xs uppercase tracking-[0.25em] text-zinc-400 md:flex">
+                  {navItems.map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={item.onClick}
+                      className={`whitespace-nowrap transition hover:text-white ${item.active ? "text-white" : ""}`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {entered && (
-              <div className="hidden items-center gap-6 text-xs uppercase tracking-[0.25em] text-zinc-400 md:flex">
-                <button type="button" onClick={() => navigateToMainSection(skillsRef)} className="transition hover:text-white">
-                  Skills
-                </button>
-                <button type="button" onClick={() => navigateToMainSection(experienceRef)} className="transition hover:text-white">
-                  Experiences & Volunteering
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setView("projects")}
-                  className={`transition hover:text-white ${view === "projects" ? "text-white" : ""}`}
-                >
-                  Projects
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setView("contact")}
-                  className={`transition hover:text-white ${view === "contact" ? "text-white" : ""}`}
-                >
-                  Contact
-                </button>
+              <div className="mt-4 md:hidden">
+                <div className="no-scrollbar -mx-1 flex overflow-x-auto px-1 pb-1">
+                  <div className="flex min-w-max gap-3 pr-2">
+                    {navItems.map((item) => (
+                      <button
+                        key={item.label}
+                        type="button"
+                        onClick={item.onClick}
+                        className={`whitespace-nowrap rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.18em] transition ${
+                          item.active
+                            ? "border-white bg-white text-black"
+                            : "border-white/15 bg-white/[0.04] text-zinc-300 hover:border-white/35 hover:text-white"
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </motion.header>
 
-          <div className="mt-36 grid items-center gap-12 lg:grid-cols-[1fr_0.95fr]">
+          <div className="mt-14 grid items-start gap-8 sm:mt-16 md:mt-24 md:gap-12 lg:mt-36 lg:grid-cols-[1fr_0.95fr]">
             <div>
               <motion.h1
                 ref={headingRef}
-                className="max-w-4xl bg-gradient-to-r from-amber-200 via-fuchsia-200 to-cyan-200 bg-[length:200%_100%] bg-clip-text text-5xl font-semibold leading-[0.9] tracking-[-0.06em] text-transparent md:text-7xl lg:text-[86px]"
+                className="max-w-4xl bg-gradient-to-r from-amber-200 via-fuchsia-200 to-cyan-200 bg-[length:200%_100%] bg-clip-text text-4xl font-semibold leading-[0.92] tracking-[-0.06em] text-transparent sm:text-5xl md:text-7xl lg:text-[86px]"
                 animate={{
                   backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                  scale: [1, 1.02, 1],
+                  scale: isMobile ? 1 : [1, 1.02, 1],
                 }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                style={{
-                  transform: `scale(${1 + proximity * 0.08})`,
-                  filter: `drop-shadow(0 0 ${20 * proximity}px rgba(255,255,255,0.6))`,
-                }}
+                style={
+                  isMobile
+                    ? undefined
+                    : {
+                        transform: `scale(${1 + proximity * 0.08})`,
+                        filter: `drop-shadow(0 0 ${20 * proximity}px rgba(255,255,255,0.6))`,
+                      }
+                }
               >
                 <Typewriter
                   text={
@@ -855,7 +909,7 @@ export default function Portfolio() {
               </motion.h1>
 
               <motion.p
-                className="mt-6 max-w-3xl whitespace-pre-line text-lg leading-8 text-zinc-400"
+                className="mt-5 max-w-3xl whitespace-pre-line text-base leading-8 text-zinc-300 sm:mt-6 md:text-lg md:leading-8 md:text-zinc-400"
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
@@ -871,12 +925,12 @@ export default function Portfolio() {
 
               {!entered && (
                 <motion.div
-                  className="mt-8 flex flex-wrap gap-3"
+                  className="mt-7 flex flex-wrap gap-3 sm:mt-8"
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.24 }}
                 >
-                  <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-zinc-300 backdrop-blur-xl">
+                  <div className="max-w-[92%] rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-zinc-300 backdrop-blur-xl sm:max-w-fit">
                     Use the rocket to enter the system
                   </div>
                 </motion.div>
@@ -893,33 +947,35 @@ export default function Portfolio() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ delay: 0.15 }}
-                className="mt-14"
+                className="mt-12 sm:mt-14"
               >
-                <div className="space-y-16">
+                <div className="space-y-14 sm:space-y-16">
                   <section ref={skillsRef}>
                     <h2 className="mb-6 text-3xl font-semibold">Skills</h2>
 
-                    <div className="mb-6 flex flex-wrap gap-3">
-                      {[
-                        { key: "all", label: "All" },
-                        { key: "dev", label: "Developer" },
-                        { key: "data", label: "Data & Databases" },
-                        { key: "pm", label: "Project Management & Systems" },
-                        { key: "ai", label: "AI & Analysis" },
-                        { key: "comm", label: "Communication & Behavioral" },
-                      ].map((f) => (
-                        <button
-                          key={f.key}
-                          onClick={() => setSkillFilter(f.key)}
-                          className={`rounded-full border px-4 py-2 text-xs uppercase tracking-wider transition ${
-                            skillFilter === f.key
-                              ? "border-white bg-white text-black"
-                              : "border-white/20 text-zinc-400 hover:border-white/40 hover:text-white"
-                          }`}
-                        >
-                          {f.label}
-                        </button>
-                      ))}
+                    <div className="no-scrollbar -mx-1 mb-6 flex overflow-x-auto px-1 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+                      <div className="flex min-w-max gap-3 sm:min-w-0 sm:flex-wrap">
+                        {[
+                          { key: "all", label: "All" },
+                          { key: "dev", label: "Developer" },
+                          { key: "data", label: "Data & Databases" },
+                          { key: "pm", label: "Project Management & Systems" },
+                          { key: "ai", label: "AI & Analysis" },
+                          { key: "comm", label: "Communication & Behavioral" },
+                        ].map((f) => (
+                          <button
+                            key={f.key}
+                            onClick={() => setSkillFilter(f.key)}
+                            className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs uppercase tracking-wider transition ${
+                              skillFilter === f.key
+                                ? "border-white bg-white text-black"
+                                : "border-white/20 text-zinc-400 hover:border-white/40 hover:text-white"
+                            }`}
+                          >
+                            {f.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
                     <div className="max-w-5xl space-y-6">
@@ -1110,7 +1166,7 @@ export default function Portfolio() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ delay: 0.15 }}
-                className="mt-14"
+                className="mt-12 sm:mt-14"
               >
                 <div className="space-y-10">
                   <section>
@@ -1269,7 +1325,7 @@ export default function Portfolio() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ delay: 0.15 }}
-                className="mt-14"
+                className="mt-12 sm:mt-14"
               >
                 <section className="max-w-6xl">
                   <div className="mb-10">
@@ -1300,7 +1356,7 @@ export default function Portfolio() {
                         <FloatingTiltCard floatY={16} floatDuration={3} hoverLift={12} hoverScale={1.02} tilt={4}>
                           <div className="rounded-3xl border border-cyan-400/15 bg-white/[0.04] p-5 backdrop-blur-xl transition duration-300 hover:border-cyan-300/30 hover:bg-white/[0.06] hover:shadow-[0_0_30px_rgba(34,211,238,0.12)]">
                             <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-300/70">[ Channel ] Email</div>
-                            <div className="mt-2 text-lg font-semibold text-white break-all">shivang.bhut@usask.ca</div>
+                            <div className="mt-2 break-all text-lg font-semibold text-white">shivang.bhut@usask.ca</div>
                           </div>
                         </FloatingTiltCard>
 
