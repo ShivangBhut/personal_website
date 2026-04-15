@@ -920,7 +920,7 @@ export default function Portfolio() {
                     : view === "contact"
                       ? "Open to opportunities, collaborations, and conversations around software, data systems, analytics, and real-world product development."
                       : "Full Stack Developer focused on backend systems, data pipelines, and real-world problem solving."
-                  : "I am a Full Stack Developer and a graduate from the University of Saskatchewan with a Bachelor’s in Applied Computing, along with a strong foundation in statistical methods. My academic journey focused on areas like Object-Oriented Programming, Data Structures, Algorithms, Software Engineering, Web Development, Databases, Machine Learning, and mathematical foundations such as Probability, Calculus, and Regression.\n\nOver time, I’ve developed my expertise through hands-on experience as a software developer, where I design backend architectures, manage databases, and build systems that transform complex, messy data into clear, actionable insights using ETL processes. I also work with machine learning and data-driven systems to support smarter decision-making.\n\nI enjoy solving real-world problems by combining structured thinking with practical implementation — building systems that are not just functional, but efficient, scalable, and meaningful."}
+                  : "I am a Full Stack Developer and a graduate from the University of Saskatchewan with a Bachelor’s in Applied Computing, along with a strong foundation in statistical methods. My academic journey focused on areas like Object-Oriented Programming, Data Structures, Algorithms, Software Engineering, Web Development, Databases, Machine Learning, and mathematical foundations such as Probability, Calculus, and Regression.\n\nOver time, I’ve developed my expertise through hands-on experience as a software developer, where I design backend architectures, manage databases, and build systems that transform complex, messy data into clear, actionable insights using ETL processes. I also work with machine learning and data-driven systems to support smarter decision-making.\n\nI enjoy solving real-world problems by combining structured thinking with practical implementation building systems that are not just functional, but efficient, scalable, and meaningful."}
               </motion.p>
 
               {!entered && (
@@ -1009,7 +1009,7 @@ export default function Portfolio() {
                       <div className="relative border-l border-white/10 pl-6">
                         <div className="absolute left-[-6px] top-2 h-3 w-3 rounded-full bg-cyan-400" />
                         <div>
-                          <h3 className="text-xl font-semibold text-white">Full Stack Developer at Rivera</h3>
+                          <h3 className="text-xl font-semibold text-white">Full Stack Developer at Rivra</h3>
                           <p className="text-sm text-zinc-500">Nov 2025 – Feb 2026</p>
                         </div>
 
@@ -1040,6 +1040,7 @@ export default function Portfolio() {
                           <li>• Maintained system documentation, workflows, and configuration to support system stability and user adoption.</li>
                           <li>• Collaborated with stakeholders to gather requirements and deliver reliable system solutions.</li>
                           <li>• Documented system architecture, processes, and workflows to support maintainability and future enhancements.</li>
+                          <li>• https://www.rivra.io</li>
                         </ul>
                       </div>
 
@@ -1075,7 +1076,8 @@ export default function Portfolio() {
                           <li>• Provided technical support for customer and internal queries, translating fixes for non-technical users.</li>
                           <li>• Enhanced site stability through continuous performance, usability, and functionality improvements.</li>
                           <li>• Worked across frontend and backend components to support business requirements and rapid issue resolution.</li>
-                          <li>• Helped maintain a dependable digital experience for both customers and internal users.</li>
+                          <li>• Helped maintain a dependable digital experience for both customers and internal users.</li> 
+                          <li>• https://rtsales.ca/?gad_source=1&gad_campaignid=21620944766&gbraid=0AAAAAqk5cNps0UlN6lYTV-Vkiy49vNtVe&gclid=CjwKCAjw7vzOBhBxEiwAc7WNr-MUSooOL_RWmWhmi3G7u-UF6pSIYVNqXfYWxt0_pTTwtGeqDLrSKBoCgaAQAvD_BwE</li>
                         </ul>
                       </div>
 
