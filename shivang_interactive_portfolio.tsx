@@ -1005,7 +1005,46 @@ export default function Portfolio() {
                   <section ref={experienceRef}>
                     <h2 className="mb-8 text-3xl font-semibold">Experience</h2>
 
-                    <div className="max-w-5xl space-y-10">
+                    <div className="max-w-5xl space-y-10"> 
+                      <div className="relative border-l border-white/10 pl-6">
+                        <div className="absolute left-[-6px] top-2 h-3 w-3 rounded-full bg-cyan-400" />
+                        <div>
+                          <h3 className="text-xl font-semibold text-white">Data Analyst & Technical Support at Ghetiya M.C & Co.</h3>
+                          <p className="text-sm text-zinc-500">January 2023 – Present</p>
+                        </div>
+
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {["PostgreSQL", "Supabase", "Python", "APIs", "CatBoost", "ETL", "Backend Architecture"].map(
+                            (tag) => (
+                              <span
+                                key={tag}
+                                className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-200"
+                              >
+                                {tag}
+                              </span>
+                            )
+                          )}
+                        </div>
+
+                        <p className="mt-4 leading-7 text-zinc-400">
+                          Driving data-backed insights and reliable systems in a fast-paced financial environment.
+                        </p>
+
+                        <ul className="mt-4 space-y-2 text-sm text-zinc-400">
+                          <li>• Built interactive Power BI dashboards, reducing financial reporting time by 30–40% across audit and taxation workflows</li>
+                          <li>• Performed financial data analysis on large datasets, identifying trends and improving reporting accuracy by 25%+</li>
+                          <li>• Executed data cleaning and validation processes, reducing data inconsistencies and errors by 20–30%</li>
+                          <li>• Designed and managed structured databases and data models, improving data retrieval efficiency by 35%</li>
+                          <li>• Automated recurring reports and workflows, saving 10+ hours per week of manual effort</li>
+                          <li>• Collaborated with Chartered Accountants to enable faster, data-driven decision-making during audits and client reporting</li>
+                          <li>• Provided internal technical support, resolving 90%+ of issues on first response</li>
+                          <li>• Troubleshot hardware, software, and network issues, reducing system downtime by 25%</li> 
+                          <li>• Maintained IT systems and applications, ensuring high system reliability and smooth operations</li> 
+                          <li>• Documented technical issues and solutions, improving resolution speed for recurring problems by 20%</li> 
+                          <li>• https://ghetiyamc.com</li>
+                        </ul>
+                      </div> 
+
                       <div className="relative border-l border-white/10 pl-6">
                         <div className="absolute left-[-6px] top-2 h-3 w-3 rounded-full bg-cyan-400" />
                         <div>
